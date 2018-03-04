@@ -1,0 +1,27 @@
+{
+  "name": "node-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev:server": "nodemon server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "9.7.1",
+    "npm": "5.6.0"
+  },
+  "keywords": [],
+  "author": "Kafil Uddin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "eslint-config-latest": "^1.0.6",
+    "nodemon": "^1.17.1"
+  }
+}
