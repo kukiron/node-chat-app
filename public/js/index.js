@@ -1,5 +1,25 @@
 const socket = io() // eslint-disable-line
 
+function scrollToBottom() {
+  // Selectors
+  const messages = $("#messages"),
+    newMessage = messages.children("li:last-child")
+
+  // Helpers
+  const clientHeight = messages.prop("clientHeight"),
+    scrollTop = messages.prop("scrollTop"),
+    scrollHeight = messages.prop("scrollHeight"),
+    newMessageHeight = newMessage.innerHeight(),
+    lastMessageHeight = newMessage.prev().innerHeight()
+
+  if (
+    clientHeight + scrollTop + newMessageHeight + lastMessageHeight >=
+    scrollHeight
+  ) {
+    messages.scrollTop(scrollHeight)
+  }
+}
+
 socket.on("connect", () => {
   console.log("Connection enabled")
 })
@@ -20,6 +40,7 @@ socket.on("newMessage", msg => {
   })
 
   $("#messages").append(html)
+  scrollToBottom()
 })
 
 socket.on("newLocationMessage", msg => {
@@ -34,6 +55,7 @@ socket.on("newLocationMessage", msg => {
   })
 
   $("#messages").append(html)
+  scrollToBottom()
 })
 
 $("#message-form").on("submit", function(e) {
