@@ -9,24 +9,31 @@ socket.on("disconnect", () => {
 })
 
 socket.on("newMessage", msg => {
-  console.log("New message recieved", msg)
   const formattedTime = moment(msg.createdAt).format("h:mm a MMM Do, YYYY") // eslint-disable-line
+  const template = $("#message-template").html()
 
-  const li = $("<li></li>")
-  li.text(`${msg.from} ${formattedTime}: ${msg.text}`)
+  // eslint-disable-next-line
+  const html = Mustache.render(template, {
+    text: msg.text,
+    from: msg.from,
+    createdAt: formattedTime
+  })
 
-  $("#messages").append(li)
+  $("#messages").append(html)
 })
 
 socket.on("newLocationMessage", msg => {
   const formattedTime = moment(msg.createdAt).format("h:mm a MMM Do, YYYY") // eslint-disable-line
-  const li = $("<li></li>")
-  const a = $('<a target="_blank">My current location</a>')
+  const template = $("#location-message-template").html()
 
-  li.text(`${msg.from} ${formattedTime}: `)
-  a.attr("href", msg.url)
-  li.append(a)
-  $("#messages").append(li)
+  // eslint-disable-next-line
+  const html = Mustache.render(template, {
+    url: msg.url,
+    from: msg.from,
+    createdAt: formattedTime
+  })
+
+  $("#messages").append(html)
 })
 
 $("#message-form").on("submit", function(e) {
