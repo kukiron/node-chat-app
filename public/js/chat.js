@@ -68,13 +68,14 @@ socket.on("newLocationMessage", msg => {
 $("#message-form").on("submit", function(e) {
   e.preventDefault()
 
+  const params = $.deparam(window.location.search)
   const msgTextBox = $("[name=message]")
 
   if (msgTextBox.val() !== "") {
     socket.emit(
       "createMessage",
       {
-        from: "User",
+        from: params.name,
         text: msgTextBox.val()
       },
       () => {
