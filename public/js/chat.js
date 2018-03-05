@@ -35,6 +35,16 @@ socket.on("disconnect", () => {
   console.log("Disconnected from the server")
 })
 
+socket.on("updateUsersList", users => {
+  var ol = $("<ol></ol>")
+
+  users.forEach(function(user) {
+    ol.append($("<li></li>").text(user))
+  })
+
+  $("#users").html(ol)
+})
+
 socket.on("newMessage", msg => {
   const formattedTime = moment(msg.createdAt).format("h:mm a MMM Do, YYYY") // eslint-disable-line
   const template = $("#message-template").html()
@@ -68,14 +78,11 @@ socket.on("newLocationMessage", msg => {
 $("#message-form").on("submit", function(e) {
   e.preventDefault()
 
-  const params = $.deparam(window.location.search)
   const msgTextBox = $("[name=message]")
-
   if (msgTextBox.val() !== "") {
     socket.emit(
       "createMessage",
       {
-        from: params.name,
         text: msgTextBox.val()
       },
       () => {
