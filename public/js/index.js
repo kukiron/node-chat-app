@@ -10,18 +10,20 @@ socket.on("disconnect", () => {
 
 socket.on("newMessage", msg => {
   console.log("New message recieved", msg)
+  const formattedTime = moment(msg.createdAt).format("h:mm a MMM Do, YYYY") // eslint-disable-line
 
   const li = $("<li></li>")
-  li.text(`${msg.from}: ${msg.text}`)
+  li.text(`${msg.from} ${formattedTime}: ${msg.text}`)
 
   $("#messages").append(li)
 })
 
 socket.on("newLocationMessage", msg => {
+  const formattedTime = moment(msg.createdAt).format("h:mm a MMM Do, YYYY") // eslint-disable-line
   const li = $("<li></li>")
   const a = $('<a target="_blank">My current location</a>')
 
-  li.text(`${msg.from}: `)
+  li.text(`${msg.from} ${formattedTime}: `)
   a.attr("href", msg.url)
   li.append(a)
   $("#messages").append(li)
