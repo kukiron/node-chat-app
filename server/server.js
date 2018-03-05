@@ -5,7 +5,7 @@ const path = require("path")
 const http = require("http")
 const socketIO = require("socket.io")
 
-const generateMessage = require("./utils/message")
+const { generateMessage, generateLocationMessage } = require("./utils/message")
 
 const app = express()
 const port = process.env.PORT || 3075
@@ -40,7 +40,18 @@ io.on("connection", socket => {
     console.log("Message recieved from browser", message)
 
     io.emit("newMessage", generateMessage(message.from, message.text))
-    callback("This is from the server.")
+    callback()
+  })
+
+  socket.on("createLocationMessage", coordinate => {
+    io.emit(
+      "newLocationMessage",
+      generateLocationMessage(
+        "Admin",
+        coordinate.latitude,
+        coordinate.longitude
+      )
+    )
   })
 
   socket.on("disconnect", () => {
