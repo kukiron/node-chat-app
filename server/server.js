@@ -5,6 +5,8 @@ const path = require("path")
 const http = require("http")
 const socketIO = require("socket.io")
 
+const generateMessage = require("./utils/message")
+
 const app = express()
 const port = process.env.PORT || 3075
 
@@ -27,30 +29,18 @@ const io = socketIO(server)
 io.on("connection", socket => {
   console.log("New connection established")
 
-  const currentTime = new Date().toString(new Date().getTime())
+  socket.emit("newMessage", generateMessage("Admin", "Welcome to the chat app"))
 
-  socket.emit("welcomeMessage", {
-    from: "Admin",
-    text: "Welcome to the chat app!",
-    createdAt: currentTime
-  })
+  socket.broadcast.emit(
+    "newMessage",
+    generateMessage("Admin", "New user joined")
+  )
 
-  socket.broadcast.emit("newMessage", {
-    from: "Admin",
-    text: "New user joined.",
-    createdAt: currentTime
-  })
+  socket.on("createMessage", (message, callback) => {
+    console.log("Message recieved from browser", message)
 
-  socket.on("createMessage", message => {
-    console.log("Created message at browser", message)
-
-    const { from, text } = message
-
-    io.emit("newMessage", {
-      from,
-      text,
-      createdAt: new Date().toString(new Date().getTime())
-    })
+    io.emit("newMessage", generateMessage(message.from, message.text))
+    callback("This is from the server.")
   })
 
   socket.on("disconnect", () => {
