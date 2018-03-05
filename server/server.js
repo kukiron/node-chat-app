@@ -6,11 +6,11 @@ const http = require("http")
 const socketIO = require("socket.io")
 
 const { generateMessage, generateLocationMessage } = require("./utils/message")
+const isRealString = require("./utils/validation")
 
 const app = express()
 const port = process.env.PORT || 3075
 
-// app.use(morgan("combined"))
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -35,6 +35,14 @@ io.on("connection", socket => {
     "newMessage",
     generateMessage("Admin", "New user joined")
   )
+
+  socket.on("join", (params, callback) => {
+    if (!isRealString(params.name || !isRealString(params.room))) {
+      callback("Name & room are not valid.")
+    }
+
+    callback()
+  })
 
   socket.on("createMessage", (message, callback) => {
     console.log("Message recieved from browser", message)
