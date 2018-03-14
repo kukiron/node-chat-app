@@ -1,5 +1,7 @@
 # Node-Chat_App
 
+[![Build Status](https://travis-ci.org/kukiron/node-chat-app.svg?branch=master)](https://travis-ci.org/kukiron/node-chat-app)
+
 Real time chat application built with node & websocket (socket.io)
 
 ## Usage
