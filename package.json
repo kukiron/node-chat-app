@@ -1,11 +1,13 @@
 {
   "name": "node-chat-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Real time chat application built with node & websocket",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
     "dev:server": "nodemon server/server.js",
+    "lint": "eslint . --ext .js, .jsx",
+    "lint:fix": "eslint --fix . --ext .js, .jsx",
     "test": "mocha tests/**/*.test.js --exit",
     "test:watch": "nodemon --exec \"npm test\""
   },
